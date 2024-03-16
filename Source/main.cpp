@@ -1,115 +1,25 @@
-#define GLEW_STATIC
-#include "imgui/imgui.h"
-#include "imgui/imgui_impl_glfw.h"
-#include "imgui/imgui_impl_opengl3.h"
-#include<GL/glew.h>
-#include <windows.h>
-#include <GLFW/glfw3.h>
 
+#include "glinit.h"
+#include "guiinit.h"
 #include <iostream>
+#include "Shader.h"
 
-#if defined(_MSC_VER) && (_MSC_VER >= 1900) && !defined(IMGUI_DISABLE_WIN32_FUNCTIONS)
-#pragma comment(lib, "legacy_stdio_definitions")
-#endif
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow* window);
 
-// settings
 const unsigned int SCREEN_WIDTH = 1270;
 const unsigned int SCREEN_HEIGHT = 800;
 
-const char* vertexShaderSource = "#version 330 core\n"
-"layout (location = 0) in vec3 aPos;\n"
-"void main()\n"
-"{\n"
-"   gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);\n"
-"}\0";
-const char* fragmentShaderSource = "#version 330 core\n"
-"out vec4 FragColor;\n"
-"void main()\n"
-"{\n"
-"   FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);\n"
-"}\n\0";
-
 ImVec4 clearColor = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
+ImVec4 color = ImVec4(1.0f, 1.0f, 1.0f, 1.0f);
 int main()
 {
-    glfwInit();
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-
-    //create window
-    GLFWwindow* window = glfwCreateWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "LearnOpenGL", NULL, NULL);
-    if (window == NULL)
-    {
-        std::cout << "Failed to create GLFW window" << std::endl;
-        glfwTerminate();
-        return -1;
-    }
-    //set window centering
-    int max_width = GetSystemMetrics(SM_CXSCREEN);
-    int max_hieght = GetSystemMetrics(SM_CYSCREEN);
-    glfwSetWindowMonitor(window, NULL, (max_width / 2) - (SCREEN_WIDTH / 2), (max_hieght / 2) - (SCREEN_HEIGHT / 2), SCREEN_WIDTH, SCREEN_HEIGHT, GLFW_DONT_CARE);
-    //opengl context
-    glfwMakeContextCurrent(window);
+    GLFWwindow* window = initGLFW("Imgui-OpenGL", SCREEN_WIDTH, SCREEN_HEIGHT);
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
-    //init imgui
-    IMGUI_CHECKVERSION();
-    ImGui::CreateContext();
-    ImGuiIO& io = ImGui::GetIO(); (void)io;
-    ImGui::StyleColorsDark();
-    ImGui_ImplGlfw_InitForOpenGL(window, true);
-    ImGui_ImplOpenGL3_Init();
-    ImFont* font = io.Fonts->AddFontFromFileTTF("c:\\Windows\\Fonts\\msyh.ttc", 18.0f, NULL,
-        io.Fonts->GetGlyphRangesChineseFull());
+    initImgui(window);
+    initGLEW();
 
-
-    //load all OpenGL function pointers
-    if (glewInit() != GLEW_OK) 
-    {
-        std::cout << "glew init failed" << std::endl;
-        glfwTerminate();
-    }
-
-    // vertex shader
-    unsigned int vertexShader = glCreateShader(GL_VERTEX_SHADER);
-    glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
-    glCompileShader(vertexShader);
-    // check for shader compile errors
-    int success;
-    char infoLog[512];
-    glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &success);
-    if (!success)
-    {
-        glGetShaderInfoLog(vertexShader, 512, NULL, infoLog);
-        std::cout << "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n" << infoLog << std::endl;
-    }
-    // fragment shader
-    unsigned int fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-    glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
-    glCompileShader(fragmentShader);
-    // check for shader compile errors
-    glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &success);
-    if (!success)
-    {
-        glGetShaderInfoLog(fragmentShader, 512, NULL, infoLog);
-        std::cout << "ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n" << infoLog << std::endl;
-    }
-    // link shaders
-    unsigned int shaderProgram = glCreateProgram();
-    glAttachShader(shaderProgram, vertexShader);
-    glAttachShader(shaderProgram, fragmentShader);
-    glLinkProgram(shaderProgram);
-    // check for linking errors
-    glGetProgramiv(shaderProgram, GL_LINK_STATUS, &success);
-    if (!success) {
-        glGetProgramInfoLog(shaderProgram, 512, NULL, infoLog);
-        std::cout << "ERROR::SHADER::PROGRAM::LINKING_FAILED\n" << infoLog << std::endl;
-    }
-    glDeleteShader(vertexShader);
-    glDeleteShader(fragmentShader);
-
+    Shader ourShader("vertex.txt", "fragment.txt"); // you can name your shader files however you like
     // set up vertex data (and buffer(s)) and configure vertex attributes
     float vertices[] = {
          0.5f,  0.5f, 0.0f,  // top right
@@ -165,7 +75,8 @@ int main()
             ImGui::Begin(u8"menu");
             ImGui::Text(u8"background color");
             ImGui::Indent();
-            ImGui::ColorEdit3("Color",(float*)&clearColor);
+            ImGui::ColorEdit3("BGColor",(float*)&clearColor);
+            ImGui::ColorEdit3("ShapeColor", (float*)&color);
 
             ImGui::End();
         }
@@ -180,12 +91,14 @@ int main()
         glClear(GL_COLOR_BUFFER_BIT);
 
         //draw our first triangle
-        glUseProgram(shaderProgram);
+        ourShader.use();
+
+       
         glBindVertexArray(VAO); // seeing as we only have a single VAO there's no need to bind it every time, but we'll do so to keep things a bit more organized
         //glDrawArrays(GL_TRIANGLES, 0, 6);
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
         //glBindVertexArray(0); // no need to unbind it every time 
-
+        ourShader.setFloatVector("color", { color.x,color.y,color.z});
 
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
         //swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
@@ -197,7 +110,6 @@ int main()
     glDeleteVertexArrays(1, &VAO);
     glDeleteBuffers(1, &VBO);
     glDeleteBuffers(1, &EBO);
-    glDeleteProgram(shaderProgram);
 
     //terminate, clearing all previously allocated GLFW resources.
     ImGui_ImplOpenGL3_Shutdown();
