@@ -45,11 +45,11 @@ Shader::Shader(const char* vertexPath, const char* fragmentPath)
     glCompileShader(fragment);
     checkCompileErrors(fragment, "FRAGMENT");
     // shader Program
-    ID = glCreateProgram();
-    glAttachShader(ID, vertex);
-    glAttachShader(ID, fragment);
-    glLinkProgram(ID);
-    checkCompileErrors(ID, "PROGRAM");
+    this->ID = glCreateProgram();
+    glAttachShader(this->ID, vertex);
+    glAttachShader(this->ID, fragment);
+    glLinkProgram(this->ID);
+    checkCompileErrors(this->ID, "PROGRAM");
     // delete the shaders as they're linked into our program now and no longer necessary
     glDeleteShader(vertex);
     glDeleteShader(fragment);
@@ -58,13 +58,13 @@ Shader::Shader(const char* vertexPath, const char* fragmentPath)
 // ------------------------------------------------------------------------
 void Shader::use()
 {
-    glUseProgram(ID);
+    glUseProgram(this->ID);
 }
 // utility uniform functions
 // ------------------------------------------------------------------------
 void Shader::setBool(const std::string& name, bool value) const
 {
-    glUniform1i(glGetUniformLocation(ID, name.c_str()), (int)value);
+    glUniform1i(glGetUniformLocation(this->ID, name.c_str()), (int)value);
 }
 void Shader::checkCompileErrors(unsigned int shader, std::string type)
 {
@@ -89,9 +89,9 @@ void Shader::checkCompileErrors(unsigned int shader, std::string type)
         }
     }
 }
-void Shader::setFloatVector(const char* name, std::vector<float> args) const
+void Shader::setUniformf(const char* name, std::vector<float> args) const
 {
-    int loc = glGetUniformLocation(ID, name);
+    int loc = glGetUniformLocation(this->ID, name);
     switch (args.size()) {
     case 1:
         glUniform1f(loc, args[0]);
