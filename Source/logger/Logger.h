@@ -16,21 +16,28 @@
 // =========================================================================
 
 #pragma once
-
-#include "EngineGL.h"
-#include <fstream>
-#include <sstream>
 #include <iostream>
-#include <vector>
+#include <filesystem>
+#include <fstream>
+#include <chrono>
 
-class Shader
+using std::string;
+using std::endl;
+using std::cout;
+using namespace std::chrono;
+enum class Level
 {
-public:
-    unsigned int ID;
-    Shader(const char* vertexPath, const char* fragmentPath);
-    void use();
-    void setBool(const std::string& name, bool value) const;
-    void setUniformf(const char* name, std::vector<float> args) const;
+	DEBUG, INFO, WARNING, ERROR
+};
+class Logger
+{
 private:
-    void checkCompileErrors(unsigned int shader, std::string type);
+	void write_log();
+public:
+	Logger(string path,string filename);
+	~Logger();
+	void log(string, Level level);
+	string get_path();
+private:
+	string path;
 };

@@ -1,16 +1,22 @@
-#include "GameEngine.h"
-void framebuffer_size_callback(GLFWwindow* window, int width, int height)
-{
-	// make sure the viewport matches the new window dimensions; note that width and 
-	// height will be significantly larger than specified on retina displays.
-	glViewport(0, 0, width, height);
-}
-void processInput(GLFWwindow* window)
-{
+// =========================================================================
+// Copyright The YouM, All Rights Reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+//
+// =========================================================================
 
-	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
-		glfwSetWindowShouldClose(window, true);
-}
+#include "GameEngine.h"
+
 GameEngine::GameEngine(Mode mode, ImVec4 backgroundColor, ImVec4 shapeColor) : mode(mode), backgroundColor(backgroundColor), shapeColor(shapeColor)
 {
 	this->window = initGLFW("Imgui-OpenGL", DEFAULT_SCREEN_WIDTH, DEFAULT_SCREEN_HEIGHT);
@@ -23,15 +29,15 @@ GameEngine::GameEngine(Mode mode, ImVec4 backgroundColor, ImVec4 shapeColor) : m
 }
 GameEngine::~GameEngine()
 {
-	if (this->window != NULL)
+	if (this->window != nullptr)
 	{
 		delete this->window;
-		this->window = NULL;
+		this->window = nullptr;
 	}
-	if (this->ourShader != NULL)
+	if (this->ourShader != nullptr)
 	{
 		delete this->ourShader;
-		this->ourShader = NULL;
+		this->ourShader = nullptr;
 	}
 }
 
@@ -63,15 +69,13 @@ void GameEngine::initEngine()
 	// VAOs requires a call to glBindVertexArray anyways so we generally don't unbind VAOs (nor VBOs) when it's not directly necessary.
 	glBindVertexArray(0);
 }
-
-
 void GameEngine::render()
 {
 
 	while (!glfwWindowShouldClose(this->window))
 	{
 		glfwPollEvents();
-		if (this->mode == DEV)
+		if (this->mode == Mode::DEV)
 		{
 			ImGui_ImplOpenGL3_NewFrame();
 			ImGui_ImplGlfw_NewFrame();
@@ -104,7 +108,7 @@ void GameEngine::render()
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 		//glBindVertexArray(0); // no need to unbind it every time 
 		this->ourShader->setUniformf("color", { this->shapeColor.x,this->shapeColor.y,this->shapeColor.z });
-		if (this->mode == DEV) {
+		if (this->mode == Mode::DEV) {
 			ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 		}
 		//swap buffers and poll IO events (keys pressed/released, mouse moved etc.)

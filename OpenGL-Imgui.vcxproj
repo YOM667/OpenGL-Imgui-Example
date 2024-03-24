@@ -89,6 +89,8 @@
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\GLEW\include;$(SolutionDir)Dependencies\GLFW\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <LanguageStandard_C>stdc17</LanguageStandard_C>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -106,6 +108,8 @@
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\GLEW\include;$(SolutionDir)Dependencies\GLFW\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <LanguageStandard_C>stdc17</LanguageStandard_C>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -149,9 +153,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Source\GameEngine.cpp" />
     <ClCompile Include="Source\EngineGL.cpp" />
     <ClCompile Include="Source\EngineGUI.cpp" />
+    <ClCompile Include="Source\GameEngine.cpp" />
     <ClCompile Include="Source\imgui\imgui.cpp" />
     <ClCompile Include="Source\imgui\imgui_demo.cpp" />
     <ClCompile Include="Source\imgui\imgui_draw.cpp" />
@@ -159,14 +163,17 @@
     <ClCompile Include="Source\imgui\imgui_impl_opengl3.cpp" />
     <ClCompile Include="Source\imgui\imgui_tables.cpp" />
     <ClCompile Include="Source\imgui\imgui_widgets.cpp" />
+    <ClCompile Include="Source\logger\Logger.cpp" />
     <ClCompile Include="Source\main.cpp" />
     <ClCompile Include="Source\Shader.cpp" />
+    <ClCompile Include="Source\utils\utils.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="guiinit.h" />
-    <ClInclude Include="Source\GameEngine.h" />
     <ClInclude Include="Source\EngineGL.h" />
     <ClInclude Include="Source\EngineGUI.h" />
+    <ClInclude Include="Source\GameEngine.h" />
+    <ClInclude Include="Source\image\stb_image.h" />
     <ClInclude Include="Source\imgui\imconfig.h" />
     <ClInclude Include="Source\imgui\imgui.h" />
     <ClInclude Include="Source\imgui\imgui_impl_glfw.h" />
@@ -176,7 +183,9 @@
     <ClInclude Include="Source\imgui\imstb_rectpack.h" />
     <ClInclude Include="Source\imgui\imstb_textedit.h" />
     <ClInclude Include="Source\imgui\imstb_truetype.h" />
+    <ClInclude Include="Source\logger\Logger.h" />
     <ClInclude Include="Source\Shader.h" />
+    <ClInclude Include="Source\utils\utils.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="Resources\fragment.txt" />

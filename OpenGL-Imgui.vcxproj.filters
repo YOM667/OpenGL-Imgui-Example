@@ -20,26 +20,28 @@
     <Filter Include="Imgui\source">
       <UniqueIdentifier>{db6d0908-e7e1-4318-9c58-00aa636bfece}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Engine">
-      <UniqueIdentifier>{2f4bfe06-866b-46e5-b126-54258b39ffe5}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source">
       <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
       <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
-    <Filter Include="Header">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    <Filter Include="Source\Engine">
+      <UniqueIdentifier>{2f4bfe06-866b-46e5-b126-54258b39ffe5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Engine\image">
+      <UniqueIdentifier>{7adb4f0d-ad87-4bd3-a6e0-b4a065ba2ec5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Setup">
+      <UniqueIdentifier>{6885afc7-a2a0-4f2f-a481-20d58166ffe8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Logger">
+      <UniqueIdentifier>{03e9a0a1-624b-49fd-ae3f-f1951c395681}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Util">
+      <UniqueIdentifier>{7e1c227c-b982-4526-addb-b86401494db6}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\main.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\EngineGL.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\EngineGUI.cpp">
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="Source\imgui\imgui.cpp">
@@ -63,20 +65,26 @@
     <ClCompile Include="Source\imgui\imgui_widgets.cpp">
       <Filter>Imgui\source</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Shader.cpp">
-      <Filter>Engine</Filter>
+    <ClCompile Include="Source\EngineGL.cpp">
+      <Filter>Source\Setup</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\EngineGUI.cpp">
+      <Filter>Source\Setup</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\logger\Logger.cpp">
+      <Filter>Source\Logger</Filter>
     </ClCompile>
     <ClCompile Include="Source\GameEngine.cpp">
-      <Filter>Engine</Filter>
+      <Filter>Source\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Shader.cpp">
+      <Filter>Source\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\utils\utils.cpp">
+      <Filter>Source\Util</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Source\EngineGL.h">
-      <Filter>Header</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\EngineGUI.h">
-      <Filter>Header</Filter>
-    </ClInclude>
     <ClInclude Include="guiinit.h">
       <Filter>Imgui\header</Filter>
     </ClInclude>
@@ -107,11 +115,26 @@
     <ClInclude Include="Source\imgui\imstb_truetype.h">
       <Filter>Imgui\header</Filter>
     </ClInclude>
+    <ClInclude Include="Source\EngineGUI.h">
+      <Filter>Source\Setup</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\EngineGL.h">
+      <Filter>Source\Setup</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\logger\Logger.h">
+      <Filter>Source\Logger</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\image\stb_image.h">
+      <Filter>Source\Engine\image</Filter>
+    </ClInclude>
     <ClInclude Include="Source\GameEngine.h">
-      <Filter>Engine</Filter>
+      <Filter>Source\Engine</Filter>
     </ClInclude>
     <ClInclude Include="Source\Shader.h">
-      <Filter>Engine</Filter>
+      <Filter>Source\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\utils\utils.h">
+      <Filter>Source\Util</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
