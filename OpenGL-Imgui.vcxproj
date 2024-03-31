@@ -86,7 +86,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_CRT_SECURE_NO_WARNINGS;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\GLEW\include;$(SolutionDir)Dependencies\GLFW\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
@@ -105,7 +105,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_CRT_SECURE_NO_WARNINGS;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\GLEW\include;$(SolutionDir)Dependencies\GLFW\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
@@ -166,14 +166,12 @@
     <ClCompile Include="Source\logger\Logger.cpp" />
     <ClCompile Include="Source\main.cpp" />
     <ClCompile Include="Source\Shader.cpp" />
-    <ClCompile Include="Source\utils\utils.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="guiinit.h" />
     <ClInclude Include="Source\EngineGL.h" />
     <ClInclude Include="Source\EngineGUI.h" />
     <ClInclude Include="Source\GameEngine.h" />
-    <ClInclude Include="Source\image\stb_image.h" />
     <ClInclude Include="Source\imgui\imconfig.h" />
     <ClInclude Include="Source\imgui\imgui.h" />
     <ClInclude Include="Source\imgui\imgui_impl_glfw.h" />
@@ -185,7 +183,7 @@
     <ClInclude Include="Source\imgui\imstb_truetype.h" />
     <ClInclude Include="Source\logger\Logger.h" />
     <ClInclude Include="Source\Shader.h" />
-    <ClInclude Include="Source\utils\utils.h" />
+    <ClInclude Include="Source\stb_image.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="Resources\fragment.txt" />

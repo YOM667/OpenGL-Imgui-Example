@@ -22,12 +22,16 @@
 //         3. you need use GameEngine's method shutdown() after method render()
 // tips  : You're better off not using the 'new' form of creating GameEngine pointers
 //         that may cause memory overflow when you lanuche the program multiple times
-//         
-#include "GameEngine.h"
+//#include "GameEngine.h"
+
+#include "logger/Logger.h"
+using namespace youm::utility;
 int main(int argc, char* argv[])
 {
-    GameEngine engine(Mode::DEV);
-    engine.render();
-    engine.shutdown();
-    return 0;
+    Logger::instance()->open("project.log");
+    info("Hello");
+    //GameEngine engine(Mode::DEV);
+    //engine.render();
+    //engine.shutdown();
+    //return 0;
 }

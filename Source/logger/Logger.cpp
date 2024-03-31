@@ -17,42 +17,79 @@
 
 #include "Logger.h"
 
-void Logger::write_log()
+using namespace youm::utility;
+const char* Logger::levels[LEVEL_COUNT] = {
+	"DEBUG", "INFO", "WARN", "ERROR", "FATAL"
+};
+Logger* Logger::log_instance = nullptr;
+Logger::Logger()
 {
 }
-
-Logger::Logger(string path = "log", string filename = "devlog") : path(path)
-{
-	if (!std::filesystem::exists(path))
-	{
-		std::filesystem::create_directory(path);
-	}
-	else
-	{
-		cout << "[Log]: the " + path + "directory had been created" << endl;
-	}
-	time_point<system_clock> time_point = system_clock::now();
-	std::time_t time = system_clock::to_time_t(time_point);
-	string current_time = ctime(&time);
-	std::ofstream file(path + "\\" + filename + current_time + ".log");
-	
-	file.close();
-}
-
 Logger::~Logger()
 {
+	close();
+}
+Logger* Logger::instance()
+{
+	if (log_instance == nullptr)
+	{
+		log_instance = new Logger();
+	}
+	return log_instance;
 }
 
-void Logger::log(string message, Level level)
+void Logger::open(const string& file_name)
 {
-	time_point<system_clock> time_point = system_clock::now();
-	std::time_t time = system_clock::to_time_t(time_point);
-	string current_time = ctime(&time);
-	string text = "[" + level + "]" + current_time + " : " + message;
-	std::cout << "[]" message << std::endl;
-	
+	const char* file_path = "./log/";
+	if (!filesystem::exists(file_path)) 
+	{
+		filesystem::create_directory(file_path);
+	}
+	this->local_file = file_path + file_name;
+	out_stream.open(local_file, ios::app);
+	if (out_stream.fail())
+	{
+		throw runtime_error("open the file: " + local_file + " error");
+	}
+}
 
-string Logger::get_path()
+void Logger::close()
 {
-	return this->path;
+	out_stream.close();
+}
+
+void Logger::log(Level level, const char* file, int line, const char* message, ...)
+{
+	time_point<system_clock> now_time = system_clock::now();
+	time_t t_time = system_clock::to_time_t(now_time);
+	tm tm = *gmtime(&t_time);
+	stringstream time_stream;
+	time_stream << put_time(&tm, "%Y-%m-%d %H:%M:%S");
+	string time = time_stream.str();
+	const char* format = "%s %s [%s %d]: ";
+	int size = snprintf(nullptr, 0, format, time.c_str(), levels[(int)level], file, line);
+	if(size > 0)
+	{
+		char* buffer = new char[size + 1];
+		snprintf(buffer, size + 1, format, time.c_str(), levels[(int)level], file, line);
+		buffer[size] = 0;
+		cout << buffer;
+		out_stream << buffer;
+		delete[] buffer;
+	}
+	va_list arg_ptr;
+	va_start(arg_ptr, message);
+	size = vsnprintf(nullptr,0,message,arg_ptr);
+	va_end(arg_ptr);
+	if (size > 0)
+	{
+		char* content = new char[size + 1];
+		va_start(arg_ptr, message);
+		size = vsnprintf(content, size + 1, message, arg_ptr);
+		va_end(arg_ptr);
+		cout << content << endl;
+		out_stream << content;
+	}
+	out_stream << "\n";
+	out_stream.flush();
 }

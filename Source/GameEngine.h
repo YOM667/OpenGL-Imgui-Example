@@ -17,12 +17,12 @@
 
 #pragma once
 
+//#define STB_IMAGE_IMPLEMENTATION
+//#include "stb_image.h"
+
 #include "EngineGL.h"
 #include "EngineGUI.h"
 #include "Shader.h"
-
-#define STB_IMAGE_IMPLEMENTATION
-#include "image/stb_image.h"
 
 #include <iostream>
 enum class Mode {

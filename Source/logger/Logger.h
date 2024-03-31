@@ -17,27 +17,62 @@
 
 #pragma once
 #include <iostream>
-#include <filesystem>
 #include <fstream>
-#include <chrono>
+#include <sstream>
+#include <filesystem>
 
-using std::string;
-using std::endl;
-using std::cout;
+#include <chrono>
+#include <iomanip>
+
+#include <stdarg.h>
+
+
+using namespace std;
 using namespace std::chrono;
-enum class Level
+const unsigned int LEVEL_COUNT = 5;
+
+namespace youm
 {
-	DEBUG, INFO, WARNING, ERROR
-};
-class Logger
-{
-private:
-	void write_log();
-public:
-	Logger(string path,string filename);
-	~Logger();
-	void log(string, Level level);
-	string get_path();
-private:
-	string path;
-};
+	namespace utility
+	{
+#define debug(message, ...) \
+		Logger::instance()->log(Level::LEVEL_DEBUG,__FILE__,__LINE__, message, __VA_ARGS__)
+
+#define info(message, ...) \
+		Logger::instance()->log(Level::LEVEL_INFO,__FILE__,__LINE__, message, __VA_ARGS__)
+
+#define error(message, ...) \
+		Logger::instance()->log(Level::LEVEL_ERROR,__FILE__,__LINE__, message, __VA_ARGS__)
+
+#define warning(message, ...) \
+		Logger::instance()->log(Level::LEVEL_WARNING,__FILE__,__LINE__, message, __VA_ARGS__)
+
+#define fatal(message, ...) \
+		Logger::instance()->log(Level::LEVEL_FATAL,__FILE__,__LINE__, message, __VA_ARGS__)
+
+
+		enum class Level
+		{
+			LEVEL_DEBUG, LEVEL_INFO, LEVEL_WARN, LEVEL_ERROR, LEVEL_FATAL
+		};
+
+		class Logger
+		{
+		public:
+
+			Logger();
+			~Logger();
+			static Logger* instance();
+			void open(const string& file_name);
+			void close();
+			void log(Level level, const char* file, int line, const char* message, ...);
+		private:
+
+			string local_file;
+			ofstream out_stream;
+			static const char* levels[LEVEL_COUNT];
+			static Logger* log_instance;
+		};
+
+	}
+}
