@@ -14,54 +14,79 @@
 // limitations under the License.
 //
 // =========================================================================
-
+#define STB_IMAGE_IMPLEMENTATION
+#include "stb_image.h"
 #include "EngineGL.h"
 
-void processInput(GLFWwindow* window)
+namespace youm::engine
 {
-    if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
-        glfwSetWindowShouldClose(window, true);
-}
-void framebuffer_size_callback(GLFWwindow* window, int width, int height)
-{
-    // make sure the viewport matches the new window dimensions; note that width and 
-    // height will be significantly larger than specified on retina displays.
-    glViewport(0, 0, width, height);
-}
-GLFWwindow* initGLFW(const char* name, int width = 700, int height = 700)
-{
-    glfwInit();
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-    //create window
-    GLFWwindow* window = glfwCreateWindow(width, height, name, NULL, NULL);
-    if (window == NULL)
+    GLFWwindow* initGLFW(const char* name, int width = 700, int height = 700)
     {
-        return NULL;
+        glfwInit();
+        glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+        glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+        glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+
+        //create gameWindow
+        GLFWwindow* window = glfwCreateWindow(width, height, name, nullptr, nullptr);
+        if (window == nullptr)
+        {
+            return nullptr;
+        }
+        else
+        {
+            setWindowCenter(window, width, height);
+            glfwMakeContextCurrent(window);
+            glEnable(GL_DEPTH_TEST);
+            return window;
+        }
     }
-    else
+
+    void setWindowCenter(GLFWwindow* window, int width, int height)
     {
-        setCenter(window, width, height);
-        glfwMakeContextCurrent(window);
-        return window;
+        int max_width = GetSystemMetrics(SM_CXSCREEN);
+        int max_hieght = GetSystemMetrics(SM_CYSCREEN);
+        glfwSetWindowMonitor(window, nullptr, (max_width / 2) - (width / 2), (max_hieght / 2) - (height / 2), width, height, GLFW_DONT_CARE);
+    }
+
+    void initGLEW()
+    {
+        //load all OpenGL function pointers
+        if (glewInit() != GLEW_OK)
+        {
+            printf("glew init failed");
+            glfwTerminate();
+        }
+    }
+    unsigned int loadImage(const char* file, GLint internal_format, GLenum format, int slot)
+    {
+        unsigned int texture_buffer;
+        glGenTextures(1, &texture_buffer);
+        glActiveTexture(GL_TEXTURE0 + slot);
+        glBindTexture(GL_TEXTURE_2D, texture_buffer); // all upcoming GL_TEXTURE_2D operations now have effect on this texture object
+        // set the texture wrapping parameters
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);	// set texture wrapping to GL_REPEAT (default wrapping method)
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+        // set texture filtering parameters
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        // load image, create texture and generate mipmaps
+        int width, height, nrChannels;
+        stbi_set_flip_vertically_on_load(true);
+        // The FileSystem::getPath(...) is part of the GitHub repository so we can find files on any IDE/platform; replace it with your own image path.
+        unsigned char *data = stbi_load(file, &width, &height, &nrChannels, 0);
+        if (data)
+        {
+            glTexImage2D(GL_TEXTURE_2D, 0, internal_format, width, height, 0, format, GL_UNSIGNED_BYTE, data);
+            glGenerateMipmap(GL_TEXTURE_2D);
+        }
+        else
+        {
+            std::cout << "Failed to load texture" << std::endl;
+        }
+        stbi_image_free(data);
+        return texture_buffer;
     }
 }
 
-void setCenter(GLFWwindow* window, int width, int height)
-{
-    int max_width = GetSystemMetrics(SM_CXSCREEN);
-    int max_hieght = GetSystemMetrics(SM_CYSCREEN);
-    glfwSetWindowMonitor(window, NULL, (max_width / 2) - (width / 2), (max_hieght / 2) - (height / 2), width, height, GLFW_DONT_CARE);
-}
-
-void initGLEW()
- {
-    //load all OpenGL function pointers
-    if (glewInit() != GLEW_OK)
-    {
-        printf("glew init failed");
-        glfwTerminate();
-    }
-}

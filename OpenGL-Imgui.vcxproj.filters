@@ -25,19 +25,16 @@
       <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
     <Filter Include="Source\Engine">
-      <UniqueIdentifier>{2f4bfe06-866b-46e5-b126-54258b39ffe5}</UniqueIdentifier>
+      <UniqueIdentifier>{5afdef28-cfbc-4ec7-9235-80eef2ee3725}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Setup">
-      <UniqueIdentifier>{6885afc7-a2a0-4f2f-a481-20d58166ffe8}</UniqueIdentifier>
+    <Filter Include="Source\Utils">
+      <UniqueIdentifier>{87a0a22c-3763-4e53-ac7e-5a2f3fa508ef}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Logger">
-      <UniqueIdentifier>{03e9a0a1-624b-49fd-ae3f-f1951c395681}</UniqueIdentifier>
+    <Filter Include="Assets\textures">
+      <UniqueIdentifier>{ef4ca1f7-ddac-4d11-b7aa-a0b38814db32}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Source\main.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
     <ClCompile Include="Source\imgui\imgui.cpp">
       <Filter>Imgui\source</Filter>
     </ClCompile>
@@ -60,13 +57,10 @@
       <Filter>Imgui\source</Filter>
     </ClCompile>
     <ClCompile Include="Source\EngineGL.cpp">
-      <Filter>Source\Setup</Filter>
+      <Filter>Source\Engine</Filter>
     </ClCompile>
     <ClCompile Include="Source\EngineGUI.cpp">
-      <Filter>Source\Setup</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\logger\Logger.cpp">
-      <Filter>Source\Logger</Filter>
+      <Filter>Source\Engine</Filter>
     </ClCompile>
     <ClCompile Include="Source\GameEngine.cpp">
       <Filter>Source\Engine</Filter>
@@ -74,11 +68,20 @@
     <ClCompile Include="Source\Shader.cpp">
       <Filter>Source\Engine</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Model.cpp">
+      <Filter>Source\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\utility.cpp">
+      <Filter>Source\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Logger.cpp">
+      <Filter>Source\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\main.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="guiinit.h">
-      <Filter>Imgui\header</Filter>
-    </ClInclude>
     <ClInclude Include="Source\imgui\imconfig.h">
       <Filter>Imgui\header</Filter>
     </ClInclude>
@@ -106,14 +109,14 @@
     <ClInclude Include="Source\imgui\imstb_truetype.h">
       <Filter>Imgui\header</Filter>
     </ClInclude>
-    <ClInclude Include="Source\EngineGUI.h">
-      <Filter>Source\Setup</Filter>
+    <ClInclude Include="Source\Carema.hpp">
+      <Filter>Source\Engine</Filter>
     </ClInclude>
     <ClInclude Include="Source\EngineGL.h">
-      <Filter>Source\Setup</Filter>
+      <Filter>Source\Engine</Filter>
     </ClInclude>
-    <ClInclude Include="Source\logger\Logger.h">
-      <Filter>Source\Logger</Filter>
+    <ClInclude Include="Source\EngineGUI.h">
+      <Filter>Source\Engine</Filter>
     </ClInclude>
     <ClInclude Include="Source\GameEngine.h">
       <Filter>Source\Engine</Filter>
@@ -121,21 +124,36 @@
     <ClInclude Include="Source\Shader.h">
       <Filter>Source\Engine</Filter>
     </ClInclude>
-    <ClInclude Include="Source\stb_image.h">
+    <ClInclude Include="Source\Model.h">
       <Filter>Source\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Logger.h">
+      <Filter>Source\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\stb_image.h">
+      <Filter>Source\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\utility.h">
+      <Filter>Source\Utils</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="Resources\fragment.txt">
+    <None Include="Assets\rectangles.glsl">
       <Filter>Assets\shaders</Filter>
-    </Text>
-    <Text Include="Resources\vertex.txt">
+    </None>
+    <None Include="Assets\textures.glsl">
       <Filter>Assets\shaders</Filter>
-    </Text>
-  </ItemGroup>
-  <ItemGroup>
+    </None>
+    <None Include="Assets\vertex.glsl">
+      <Filter>Assets\shaders</Filter>
+    </None>
     <None Include="Resources\msyh.ttc">
       <Filter>Assets\font</Filter>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Assets\container.jpg">
+      <Filter>Assets\textures</Filter>
+    </Image>
   </ItemGroup>
 </Project>

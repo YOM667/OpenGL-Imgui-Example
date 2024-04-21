@@ -16,27 +16,33 @@
 // =========================================================================
 
 #include "EngineGUI.h"
-
-void initImgui(GLFWwindow* window)
+namespace youm::engine
 {
-    IMGUI_CHECKVERSION();
-    ImGui::CreateContext();
-    ImGuiIO& io = ImGui::GetIO(); (void)io;
-    ImGui::StyleColorsDark();
-    ImGui_ImplGlfw_InitForOpenGL(window, true);
-    ImGui_ImplOpenGL3_Init();
-    ImFont* font = io.Fonts->AddFontFromFileTTF("Assets/msyh.ttc", 18.0f, NULL,
-        io.Fonts->GetGlyphRangesChineseFull());
-}
-
-void createFrame(float x, float y, float width, float height, std::function<void()> const& callback)
-{
-    ImGui::NewFrame();
-    ImGui::SetWindowPos({ x,y });
-    ImGui::SetWindowSize({ width,height });
+    void initImgui(GLFWwindow* window)
     {
-        callback();
+        IMGUI_CHECKVERSION();
+        ImGui::CreateContext();
+        ImGuiIO& io = ImGui::GetIO(); (void)io;
+        ImGui::StyleColorsDark();
+        ImGui_ImplGlfw_InitForOpenGL(window, true);
+        ImGui_ImplOpenGL3_Init();
+        io.Fonts->AddFontFromFileTTF("Assets/msyh.ttc", 18.0f, nullptr,
+                                     io.Fonts->GetGlyphRangesChineseFull());
     }
-    ImGui::End();
-    ImGui::Render();
+
+    void createFrame(const char* title,float x, float y, float width, float height, std::function<void()> const& callback)
+    {
+        ImGui_ImplOpenGL3_NewFrame();
+        ImGui_ImplGlfw_NewFrame();
+        ImGui::NewFrame();
+        {
+            ImGui::Begin(title);
+            ImGui::SetWindowPos({ x, y });
+            ImGui::SetWindowSize({ width,height });
+            callback();
+            ImGui::End();
+        }
+        ImGui::Render();
+    }
+
 }

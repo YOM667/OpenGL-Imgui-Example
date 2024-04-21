@@ -18,19 +18,29 @@
 #pragma once
 
 #include "EngineGL.h"
+
 #include <fstream>
 #include <sstream>
 #include <iostream>
 #include <vector>
 
-class Shader
-{
-public:
-    unsigned int ID;
-    Shader(const char* vertexPath, const char* fragmentPath);
-    void use();
-    void setBool(const std::string& name, bool value) const;
-    void setUniformf(const char* name, std::vector<float> args) const;
-private:
-    void checkCompileErrors(unsigned int shader, std::string type);
-};
+namespace youm::engine{
+    class Shader
+    {
+    public:
+        unsigned int ID;
+        Shader(const char* vertexPath, const char* fragmentPath);
+        void use() const;
+
+        void setInt(const char *name, int num) const;
+        void setFloat(const char *name, float num) const;
+        void setDouble(const char *name, double num) const;
+        void setBool(const char *name, bool value) const;
+        void setUniformF(const char* name, std::vector<float> args) const;
+        void setMatrix2F(const char* name, const glm::mat2 &mat2) const;
+        void setMatrix3F(const char* name, const glm::mat3 &mat3) const;
+        void setMatrix4F(const char* name, glm::mat4 mat4) const;
+    private:
+        static void checkCompileErrors(unsigned int shader, std::string type);
+    };
+}

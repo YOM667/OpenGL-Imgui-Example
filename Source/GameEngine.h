@@ -17,49 +17,57 @@
 
 #pragma once
 
-//#define STB_IMAGE_IMPLEMENTATION
-//#include "stb_image.h"
-
 #include "EngineGL.h"
 #include "EngineGUI.h"
 #include "Shader.h"
+#include "Carema.hpp"
+#include "Model.h"
 
-#include <iostream>
-enum class Mode {
-	DEV, USER, DEBUG
-};
-const int DEFAULT_SCREEN_WIDTH = 1270;
-const int DEFAULT_SCREEN_HEIGHT = 800;
-static float texCoords[] = {
-	0.0f, 0.0f, 
-	1.0f, 0.0f, 
-	0.5f, 1.0f 
-};
-static float vertices[] = {
-	 0.5f,  0.5f, 0.0f,  // top right
-	 0.5f, -0.5f, 0.0f,  // bottom right
-	-0.5f, -0.5f, 0.0f,  // bottom left
-	-0.5f,  0.5f, 0.0f   // top left 
-};
-static unsigned int indices[] = {  // note that we start from 0!
-	0, 1, 3,  // first Triangle
-	1, 2, 3   // second Triangle
-};
-class GameEngine
+#include "Logger.h"
+#include "utility.h"
+
+using namespace youm;
+
+const unsigned int DEFAULT_SCREEN_WIDTH = 1270;
+const unsigned int DEFAULT_SCREEN_HEIGHT = 800;
+
+#define TITLE "Imgui-OpenGL"
+
+namespace youm::Maple
 {
-private:
-	void initEngine();
-public:
+    //glfw events
+    static void framebufferSizeCallback(GLFWwindow* window, int width, int height);
+    static void mouseCallback(GLFWwindow * window, double xPosition, double yPosition);
+    static void keyInputCallback(GLFWwindow * window, int key, int scanCode, int action, int mods);
+    static void scrollCallback(GLFWwindow * window, double xOffset, double yOffset);
 
-	GameEngine(Mode mode = Mode::USER, ImVec4 backgroundColor = { 1.0,1.0,1.0,1.0 }, ImVec4 shapeColor = { 0.3,0.2,0.4,1.0 });
-	~GameEngine();
-	void render();
-	void shutdown();
-private:
-	ImVec4 backgroundColor;
-	ImVec4 shapeColor;
-	GLFWwindow* window;
-	Shader* ourShader;
-	Mode mode;
-	unsigned int VBO, VAO, EBO;
-};
+    class GameEngine
+    {
+    private:
+        void initEngine();
+        void render();
+        void update();
+    public:
+        enum class Mode {
+            DEV, USER, DEBUG
+        };
+        GameEngine(Mode mode, ImVec4 backgroundColor);
+        ~GameEngine();
+        void run();
+        void shutdown();
+    private:
+        //engine
+        int gameFPS;
+        bool gameRunning;
+        GLFWwindow* gameWindow;
+        //render
+        Mode mode;
+        unsigned int texture;
+        engine::Shader* shader;
+        engine::ObjectLoader* objectLoader;
+        engine::Model* model;
+        ImVec4 backgroundColor;
+        static float vertices[];
+        unsigned int VBO, VAO;
+    };
+}
